@@ -1,0 +1,724 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>100-Item Nursing English Vocabulary & Communication Test</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        navy: {
+                            800: '#1e293b',
+                            900: '#0f172a',
+                            950: '#020617',
+                        },
+                        teal: {
+                            500: '#14b8a6',
+                            600: '#0d9488',
+                            700: '#0f766e',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+        @media print {
+            .no-print {
+                display: none !important;
+            }
+            .print-only {
+                display: block !important;
+            }
+            body {
+                background: white;
+                color: black;
+            }
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col justify-between antialiased">
+
+    <!-- REGISTRATION GATE MODAL -->
+    <div id="registrationModal" class="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/80 backdrop-blur-sm p-4">
+        <div class="bg-white rounded-2xl shadow-2xl border border-slate-200 max-w-md w-full p-6 md:p-8 animate-fade-in">
+            <div class="text-center mb-6">
+                <div class="w-16 h-16 bg-teal-100 text-teal-600 rounded-2xl flex items-center justify-center mx-auto mb-3 shadow-inner">
+                    <i class="fa-solid me-0 fa-user-nurse text-3xl"></i>
+                </div>
+                <h2 class="text-2xl font-bold text-slate-900">Candidate Registration</h2>
+                <p class="text-sm text-slate-500 mt-1">100-Item Nursing English Vocabulary & Communication Assessment</p>
+            </div>
+
+            <form id="registrationForm" onsubmit="startAssessment(event)" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1">Full Name</label>
+                    <div class="relative">
+                        <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-slate-400">
+                            <i class="fa-solid fa-user"></i>
+                        </span>
+                        <input type="text" id="regName" required value="Giyono Asfarrasyid" placeholder="Enter full name"
+                            class="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:bg-white text-slate-800 font-medium text-sm transition">
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1">Candidate ID / Registration No.</label>
+                    <div class="relative">
+                        <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-slate-400">
+                            <i class="fa-solid fa-id-card"></i>
+                        </span>
+                        <input type="text" id="regId" required value="NUR-2026-8891" placeholder="e.g. NUR-2026-001"
+                            class="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:bg-white text-slate-800 font-medium text-sm transition">
+                    </div>
+                </div>
+
+                <div class="bg-blue-50 border border-blue-100 rounded-lg p-3.5 text-xs text-blue-800 flex items-start gap-2.5">
+                    <i class="fa-solid fa-circle-info text-blue-500 mt-0.5 text-sm"></i>
+                    <div>
+                        <strong class="font-semibold block mb-0.5">Assessment Protocol:</strong>
+                        100 total items across 20 modules. Answer keys and rationales will only be displayed <em>after</em> final submission.
+                    </div>
+                </div>
+
+                <button type="submit" class="w-full py-3 bg-teal-600 hover:bg-teal-700 text-white font-semibold rounded-xl shadow-lg shadow-teal-600/30 transition duration-200 flex items-center justify-center gap-2">
+                    <span>Begin Assessment</span>
+                    <i class="fa-solid fa-arrow-right"></i>
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- MAIN APP WRAPPER (HIDDEN UNTIL REGISTERED) -->
+    <div id="appContainer" class="hidden min-h-screen flex flex-col">
+        
+        <!-- HEADER / NAVBAR -->
+        <header class="bg-slate-900 text-white sticky top-0 z-40 shadow-md no-print">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex items-center justify-between h-16">
+                    <!-- Brand -->
+                    <div class="flex items-center space-x-3">
+                        <div class="p-2 bg-teal-500 rounded-lg text-white font-bold">
+                            <i class="fa-solid fa-stethoscope text-xl"></i>
+                        </div>
+                        <div>
+                            <h1 class="font-bold text-base md:text-lg leading-tight">Nursing English Assessment</h1>
+                            <p class="text-xs text-slate-400">100-Item Vocabulary & Clinical Register Test</p>
+                        </div>
+                    </div>
+
+                    <!-- User Metadata & Timer -->
+                    <div class="flex items-center gap-4">
+                        <div class="hidden md:flex flex-col text-right">
+                            <span id="displayCandidateName" class="text-sm font-semibold text-slate-200">--</span>
+                            <span id="displayCandidateId" class="text-xs text-slate-400">--</span>
+                        </div>
+                        <div class="h-8 w-px bg-slate-700 hidden md:block"></div>
+                        <div class="flex items-center gap-2 bg-slate-800 px-3 py-1.5 rounded-lg border border-slate-700">
+                            <i class="fa-regular fa-clock text-teal-400"></i>
+                            <span id="timerDisplay" class="font-mono text-sm font-semibold text-slate-200">00:00:00</span>
+                        </div>
+                        <button onclick="confirmSubmit()" class="bg-teal-600 hover:bg-teal-500 text-white text-xs md:text-sm font-semibold px-4 py-2 rounded-lg transition shadow-md">
+                            Submit Test
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Progress Bar Bar -->
+            <div class="bg-slate-800 border-t border-slate-800 px-4 py-2">
+                <div class="max-w-7xl mx-auto flex items-center justify-between text-xs text-slate-300 gap-4">
+                    <span id="progressText">Answered: 0 / 100 Items</span>
+                    <div class="flex-1 max-w-md bg-slate-700 h-2 rounded-full overflow-hidden">
+                        <div id="progressBar" class="bg-teal-400 h-full w-0 transition-all duration-300"></div>
+                    </div>
+                    <span id="progressPercent" class="font-semibold text-teal-400">0%</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- MAIN TEST INTERFACE CONTAINER -->
+        <main id="testArea" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 flex-grow w-full">
+            
+            <!-- Part Filter Tabs -->
+            <div class="flex flex-wrap gap-2 mb-6 border-b border-slate-200 pb-3 no-print">
+                <button onclick="filterPart('all')" id="tab-all" class="part-tab px-4 py-2 rounded-lg text-sm font-medium transition bg-teal-600 text-white shadow-sm">All Items (1-100)</button>
+                <button onclick="filterPart(1)" id="tab-1" class="part-tab px-4 py-2 rounded-lg text-sm font-medium transition bg-white text-slate-600 hover:bg-slate-100 border border-slate-200">Part I (1-50)</button>
+                <button onclick="filterPart(2)" id="tab-2" class="part-tab px-4 py-2 rounded-lg text-sm font-medium transition bg-white text-slate-600 hover:bg-slate-100 border border-slate-200">Part II (51-60)</button>
+                <button onclick="filterPart(3)" id="tab-3" class="part-tab px-4 py-2 rounded-lg text-sm font-medium transition bg-white text-slate-600 hover:bg-slate-100 border border-slate-200">Part III (61-80)</button>
+                <button onclick="filterPart(4)" id="tab-4" class="part-tab px-4 py-2 rounded-lg text-sm font-medium transition bg-white text-slate-600 hover:bg-slate-100 border border-slate-200">Part IV (81-100)</button>
+            </div>
+
+            <!-- Items Container -->
+            <div id="itemsContainer" class="space-y-6">
+                <!-- Dynamically Rendered Test Questions -->
+            </div>
+
+            <!-- Bottom Floating Submit Bar -->
+            <div class="mt-8 pt-4 border-t border-slate-200 flex justify-between items-center no-print">
+                <span class="text-xs text-slate-500">Ensure all questions are answered before submitting.</span>
+                <button onclick="confirmSubmit()" class="bg-teal-600 hover:bg-teal-700 text-white font-semibold px-6 py-2.5 rounded-xl shadow-lg transition">
+                    Submit Entire Assessment
+                </button>
+            </div>
+        </main>
+
+        <!-- RESULTS DASHBOARD CONTAINER (HIDDEN UNTIL SUBMITTED) -->
+        <main id="resultsArea" class="hidden max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex-grow w-full">
+            <!-- Content built via JavaScript -->
+        </main>
+
+        <!-- FOOTER -->
+        <footer class="bg-white border-t border-slate-200 py-4 mt-auto no-print">
+            <div class="max-w-7xl mx-auto px-4 text-center text-xs text-slate-500">
+                100-Item Clinical Nursing English Vocabulary & Communication Test &bull; Standardized Medical Assessment Engine
+            </div>
+        </footer>
+    </div>
+
+    <!-- SUBMISSION CONFIRMATION MODAL -->
+    <div id="confirmModal" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-slate-900/70 backdrop-blur-sm p-4 no-print">
+        <div class="bg-white rounded-2xl shadow-xl border border-slate-200 max-w-md w-full p-6 text-center">
+            <div class="w-12 h-12 bg-amber-100 text-amber-600 rounded-full flex items-center justify-center mx-auto mb-3">
+                <i class="fa-solid fa-triangle-exclamation text-xl"></i>
+            </div>
+            <h3 class="text-lg font-bold text-slate-900 mb-1">Submit Assessment?</h3>
+            <p id="unansweredWarning" class="text-sm text-slate-600 mb-4"></p>
+            <div class="flex gap-3 justify-center">
+                <button onclick="closeConfirmModal()" class="px-4 py-2 border border-slate-300 rounded-lg text-slate-700 text-sm font-semibold hover:bg-slate-50 transition">
+                    Continue Testing
+                </button>
+                <button onclick="finalizeSubmission()" class="px-5 py-2 bg-teal-600 text-white rounded-lg text-sm font-semibold hover:bg-teal-700 transition shadow">
+                    Confirm Submission
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- JAVASCRIPT ENGINE -->
+    <script>
+        // DATA STRUCTURE FOR 100 ITEMS ACCROSS 20 MODULES
+        const rawTestData = [
+            // PART I: 1-50 (Informal to Formal Clinical Translation)
+            { id: 1, part: 1, module: "Module 1: General Symptoms", scene: "M1-S1", situation: "ED Triage", informal: "The patient says they are thrown up repeatedly since morning.", key: "emesis", options: ["emesis", "diarrhea", "epistaxis", "syncope"], rationale: "Emesis is the medical term for vomiting/throwing up." },
+            { id: 2, part: 1, module: "Module 1: General Symptoms", scene: "M1-S2", situation: "Inpatient Ward", informal: "Patient feels dizzy and almost passed out.", key: "syncope", options: ["syncope", "dyspnea", "vertigo", "fatigue"], rationale: "Syncope refers to temporary loss of consciousness or fainting." },
+            { id: 3, part: 1, module: "Module 1: General Symptoms", scene: "M1-S3", situation: "Outpatient Clinic", informal: "Patient reports high fever with shivering chills.", key: "pyrexia", options: ["pyrexia", "hypothermia", "sweating", "malaise"], rationale: "Pyrexia is the clinical term for fever or elevated body temperature." },
+            { id: 4, part: 1, module: "Module 1: General Symptoms", scene: "M1-S4", situation: "ED Bay 2", informal: "Shortness of breath when lying flat.", key: "orthopnea", options: ["orthopnea", "apnea", "bradypnea", "tachypnea"], rationale: "Orthopnea is shortness of breath that occurs when lying flat." },
+            { id: 5, part: 1, module: "Module 1: General Symptoms", scene: "M1-S5", situation: "Post-Op Ward", informal: "Extreme tightness in chest with sweating.", key: "diaphoresis", options: ["diaphoresis", "cyanosis", "pallor", "erythema"], rationale: "Diaphoresis refers to excessive, profuse sweating." },
+            
+            { id: 6, part: 1, module: "Module 2: Respiratory Care", scene: "M2-S1", situation: "ICU Room 4", informal: "Coughing up thick yellow-green phlegm.", key: "sputum", options: ["sputum", "saliva", "mucus", "exudate"], rationale: "Sputum is matter expectorated from the respiratory tract." },
+            { id: 7, part: 1, module: "Module 2: Respiratory Care", scene: "M2-S2", situation: "Pulmonology Clinic", informal: "Patient coughing up blood flecks.", key: "hemoptysis", options: ["hemoptysis", "hematemesis", "epistaxis", "hematuria"], rationale: "Hemoptysis is the coughing up of blood from the respiratory tract." },
+            { id: 8, part: 1, module: "Module 2: Respiratory Care", scene: "M2-S3", situation: "Pediatric Ward", informal: "High-pitched whistling sound during breathing.", key: "stridor", options: ["stridor", "wheeze", "rhonchi", "crackles"], rationale: "Stridor is a harsh, high-pitched respiratory sound caused by obstructed airway." },
+            { id: 9, part: 1, module: "Module 2: Respiratory Care", scene: "M2-S4", situation: "ED Bay 5", informal: "Abnormally rapid breathing rate.", key: "tachypnea", options: ["tachypnea", "bradypnea", "hyperpnea", "dyspnea"], rationale: "Tachypnea is abnormally rapid breathing." },
+            { id: 10, part: 1, module: "Module 2: Respiratory Care", scene: "M2-S5", situation: "Medical Ward", informal: "Bluish tint on lips and fingernails.", key: "cyanosis", options: ["cyanosis", "jaundice", "pallor", "rubor"], rationale: "Cyanosis is a bluish discoloration of skin/mucous membranes due to low oxygen." },
+
+            { id: 11, part: 1, module: "Module 3: Cardiovascular System", scene: "M3-S1", situation: "Telemetry Unit", informal: "Patient feels irregular fluttering heartbeats.", key: "palpitations", options: ["palpitations", "arrhythmia", "ischemia", "murmur"], rationale: "Palpitations are sensations of a rapid or irregular heartbeat." },
+            { id: 12, part: 1, module: "Module 3: Cardiovascular System", scene: "M3-S2", situation: "Cardiology Ward", informal: "Swelling in both lower legs and ankles.", key: "edema", options: ["edema", "ascites", "lymphedema", "effusion"], rationale: "Peripheral edema refers to swelling caused by fluid retention in lower extremities." },
+            { id: 13, part: 1, module: "Module 3: Cardiovascular System", scene: "M3-S3", situation: "CCU Room 2", informal: "Extremely slow heart rate below 50 bpm.", key: "bradycardia", options: ["bradycardia", "tachycardia", "asystole", "fibrillation"], rationale: "Bradycardia is an abnormally slow heart rate (under 60 bpm)." },
+            { id: 14, part: 1, module: "Module 3: Cardiovascular System", scene: "M3-S4", situation: "ED Triage", informal: "High blood pressure reading 180/110.", key: "hypertension", options: ["hypertension", "hypotension", "stenosis", "hyperkalemia"], rationale: "Hypertension refers to abnormally high blood pressure." },
+            { id: 15, part: 1, module: "Module 3: Cardiovascular System", scene: "M3-S5", situation: "Step-Down Unit", informal: "Chest pain caused by reduced heart blood flow.", key: "angina", options: ["angina", "infarction", "embolism", "ischemia"], rationale: "Angina pectoris is chest pain caused by reduced blood flow to the heart muscle." },
+
+            { id: 16, part: 1, module: "Module 4: Gastrointestinal Care", scene: "M4-S1", situation: "Gastro Ward", informal: "Black tarry stool reported by family.", key: "melena", options: ["melena", "hematochezia", "steatorrhea", "occult blood"], rationale: "Melena refers to dark, tarry stools containing digested blood." },
+            { id: 17, part: 1, module: "Module 4: Gastrointestinal Care", scene: "M4-S2", situation: "Surgical Ward", informal: "Difficulty swallowing solid food or liquids.", key: "dysphagia", options: ["dysphagia", "dysphasia", "dyspepsia", "dyspnea"], rationale: "Dysphagia is the medical term for difficulty or discomfort in swallowing." },
+            { id: 18, part: 1, module: "Module 4: Gastrointestinal Care", scene: "M4-S3", situation: "Outpatient Clinic", informal: "Persistent belly bloating and gas accumulation.", key: "flatulence", options: ["flatulence", "ascites", "meteorism", "eructation"], rationale: "Flatulence is the presence of excessive gas in the digestive tract." },
+            { id: 19, part: 1, module: "Module 4: Gastrointestinal Care", scene: "M4-S4", situation: "ED Room 10", informal: "Vomiting bright red blood.", key: "hematemesis", options: ["hematemesis", "hemoptysis", "epistaxis", "melena"], rationale: "Hematemesis is the vomiting of overt blood." },
+            { id: 20, part: 1, module: "Module 4: Gastrointestinal Care", scene: "M4-S5", situation: "Inpatient Ward", informal: "Severe loss of appetite over past week.", key: "anorexia", options: ["anorexia", "cachexia", "bulimia", "dyspepsia"], rationale: "Anorexia in clinical context refers to loss of appetite for food." },
+
+            { id: 21, part: 1, module: "Module 5: Neurological Assessment", scene: "M5-S1", situation: "Neuro ICU", informal: "Inability to speak or form coherent words.", key: "aphasia", options: ["aphasia", "dysarthria", "ataxia", "apraxia"], rationale: "Aphasia is an impairment of language affecting speech production or comprehension." },
+            { id: 22, part: 1, module: "Module 5: Neurological Assessment", scene: "M5-S2", situation: "Stroke Unit", informal: "Slurred speech due to muscle weakness.", key: "dysarthria", options: ["dysarthria", "aphasia", "dysphagia", "ataxia"], rationale: "Dysarthria is motor speech disorder caused by muscle weakness." },
+            { id: 23, part: 1, module: "Module 5: Neurological Assessment", scene: "M5-S3", situation: "Neurology Clinic", informal: "Unsteady, wobbly, uncoordinated walking.", key: "ataxia", options: ["ataxia", "paresthesia", "tremor", "spasticity"], rationale: "Ataxia refers to the loss of full control of bodily movements." },
+            { id: 24, part: 1, module: "Module 5: Neurological Assessment", scene: "M5-S4", situation: "Rehab Ward", informal: "Pins and needles numbness in toes.", key: "paresthesia", options: ["paresthesia", "neuralgia", "hyperesthesia", "paralysis"], rationale: "Paresthesia is an abnormal sensation like tingling, tickling, or burning." },
+            { id: 25, part: 1, module: "Module 5: Neurological Assessment", scene: "M5-S5", situation: "ED Bay 1", informal: "Sudden jerky uncontrollable body convulsion.", key: "seizure", options: ["seizure", "syncope", "tremor", "myoclonus"], rationale: "A seizure is a sudden, uncontrolled electrical disturbance in the brain." },
+
+            { id: 26, part: 1, module: "Module 6: Renal & Urinary", scene: "M6-S1", situation: "Urology Ward", informal: "Painful or burning sensation during urination.", key: "dysuria", options: ["dysuria", "anuria", "nocturia", "polyuria"], rationale: "Dysuria refers to painful or difficult urination." },
+            { id: 27, part: 1, module: "Module 6: Renal & Urinary", scene: "M6-S2", situation: "Nephrology Unit", informal: "No urine output produced in 24 hours.", key: "anuria", options: ["anuria", "oliguria", "hematuria", "dysuria"], rationale: "Anuria is the non-passage or absence of urine (<100 mL/day)." },
+            { id: 28, part: 1, module: "Module 6: Renal & Urinary", scene: "M6-S3", situation: "Inpatient Ward", informal: "Waking up repeatedly at night to urinate.", key: "nocturia", options: ["nocturia", "enuresis", "polyuria", "oliguria"], rationale: "Nocturia is the need to wake up during the night to pass urine." },
+            { id: 29, part: 1, module: "Module 6: Renal & Urinary", scene: "M6-S4", situation: "Dialysis Clinic", informal: "Presence of visible blood in urine.", key: "hematuria", options: ["hematuria", "proteinuria", "pyuria", "glucosuria"], rationale: "Hematuria is the presence of red blood cells in the urine." },
+            { id: 30, part: 1, module: "Module 6: Renal & Urinary", scene: "M6-S5", situation: "ICU Room 2", informal: "Abnormally low urine output under 400ml/day.", key: "oliguria", options: ["oliguria", "anuria", "polyuria", "dysuria"], rationale: "Oliguria is low urine output defined as less than 400-500 mL/day." },
+
+            { id: 31, part: 1, module: "Module 7: Musculoskeletal", scene: "M7-S1", situation: "Orthopedic Clinic", informal: "Wasting or shrinking of leg muscle.", key: "atrophy", options: ["atrophy", "hypertrophy", "dystrophy", "contracture"], rationale: "Muscle atrophy is the loss or reduction of muscle tissue." },
+            { id: 32, part: 1, module: "Module 7: Musculoskeletal", scene: "M7-S2", situation: "Rehab Center", informal: "Permanent tightening/stiffening of a joint.", key: "contracture", options: ["contracture", "ankylosis", "subluxation", "spasm"], rationale: "Contracture is a permanent tightening of fascia, muscles, or tendons." },
+            { id: 33, part: 1, module: "Module 7: Musculoskeletal", scene: "M7-S3", situation: "Physiotherapy", informal: "Grating or crackling sound in knee joint.", key: "crepitus", options: ["crepitus", "friction rub", "clunk", "clicking"], rationale: "Crepitus describes a grating, crackling sound or sensation in a joint." },
+            { id: 34, part: 1, module: "Module 7: Musculoskeletal", scene: "M7-S4", situation: "Ortho Ward", informal: "Partial or incomplete dislocation of shoulder.", key: "subluxation", options: ["subluxation", "dislocation", "fracture", "sprain"], rationale: "Subluxation is a partial or incomplete dislocation of a joint." },
+            { id: 35, part: 1, module: "Module 7: Musculoskeletal", scene: "M7-S5", situation: "Rheumatology", informal: "Severe joint pain without swelling.", key: "arthralgia", options: ["arthralgia", "arthritis", "myalgia", "tendonitis"], rationale: "Arthralgia refers specifically to joint pain without inflammatory swelling." },
+
+            { id: 36, part: 1, module: "Module 8: Integumentary/Wound Care", scene: "M8-S1", situation: "Wound Clinic", informal: "Dead, black, necrotic skin tissue.", key: "eschar", options: ["eschar", "slough", "exudate", "granulation"], rationale: "Eschar is a dry, dark scab or falling away of dead skin." },
+            { id: 37, part: 1, module: "Module 8: Integumentary/Wound Care", scene: "M8-S2", situation: "Surgical Ward", informal: "Clear, watery drainage from incision.", key: "serous", options: ["serous", "purulent", "sanguineous", "serosanguineous"], rationale: "Serous fluid is clear, pale yellow watery drainage." },
+            { id: 38, part: 1, module: "Module 8: Integumentary/Wound Care", scene: "M8-S3", situation: "Wound Care Unit", informal: "Thick yellow or green pus drainage.", key: "purulent", options: ["purulent", "serous", "exudate", "sanguineous"], rationale: "Purulent discharge contains pus, composed of dead WBCs and tissue." },
+            { id: 39, part: 1, module: "Module 8: Integumentary/Wound Care", scene: "M8-S4", situation: "Dermatology", informal: "Redness of skin caused by inflammation.", key: "erythema", options: ["erythema", "ecchymosis", "petechiae", "pruritus"], rationale: "Erythema is redness of the skin caused by capillary congestion." },
+            { id: 40, part: 1, module: "Module 8: Integumentary/Wound Care", scene: "M8-S5", situation: "Plastic Surgery", informal: "Severe, persistent skin itching.", key: "pruritus", options: ["pruritus", "urticaria", "eczema", "erythema"], rationale: "Pruritus is the medical term for intense itching." },
+
+            { id: 41, part: 1, module: "Module 9: Endocrine Care", scene: "M9-S1", situation: "Endocrine Clinic", informal: "Excessive, unquenchable thirst.", key: "polydipsia", options: ["polydipsia", "polyphagia", "polyuria", "adipsia"], rationale: "Polydipsia is excessive or abnormal thirst." },
+            { id: 42, part: 1, module: "Module 9: Endocrine Care", scene: "M9-S2", situation: "Diabetes Unit", informal: "Excessive or extreme hunger.", key: "polyphagia", options: ["polyphagia", "polydipsia", "anorexia", "bulimia"], rationale: "Polyphagia refers to excessive or extreme hunger/eating." },
+            { id: 43, part: 1, module: "Module 9: Endocrine Care", scene: "M9-S3", situation: "ED Bay 3", informal: "Dangerously low blood sugar level.", key: "hypoglycemia", options: ["hypoglycemia", "hyperglycemia", "ketoacidosis", "glycosuria"], rationale: "Hypoglycemia is abnormally low level of glucose in blood." },
+            { id: 44, part: 1, module: "Module 9: Endocrine Care", scene: "M9-S4", situation: "Outpatient Ward", informal: "Enlargement of the thyroid gland in neck.", key: "goiter", options: ["goiter", "myxedema", "thyroiditis", "adenoma"], rationale: "Goiter is an abnormal enlargement of the thyroid gland." },
+            { id: 45, part: 1, module: "Module 9: Endocrine Care", scene: "M9-S5", situation: "Endocrine Ward", informal: "Bulging or protruding eyeballs.", key: "exophthalmos", options: ["exophthalmos", "ptosis", "nystagmus", "strabismus"], rationale: "Exophthalmos is abnormal protrusion of the eyeball." },
+
+            { id: 46, part: 1, module: "Module 10: Infection Control", scene: "M10-S1", situation: "Isolation Ward", informal: "Infection acquired while staying in hospital.", key: "nosocomial", options: ["nosocomial", "idiopathic", "iatrogenic", "opportunistic"], rationale: "Nosocomial infection refers to a hospital-acquired infection (HAI)." },
+            { id: 47, part: 1, module: "Module 10: Infection Control", scene: "M10-S2", situation: "ICU Unit", informal: "Presence of bacteria actively growing in bloodstream.", key: "bacteremia", options: ["bacteremia", "septicemia", "viremia", "toxemia"], rationale: "Bacteremia is the presence of bacteria in the bloodstream." },
+            { id: 48, part: 1, module: "Module 10: Infection Control", scene: "M10-S3", situation: "Infection Ward", informal: "Spread of pathogen through coughing droplets.", key: "airborne", options: ["airborne", "fomite", "vector", "parenteral"], rationale: "Airborne transmission occurs through small particle micro-droplets." },
+            { id: 49, part: 1, module: "Module 10: Infection Control", scene: "M10-S4", situation: "CSSD Unit", informal: "Free from all living microorganisms and spores.", key: "sterile", options: ["sterile", "aseptic", "clean", "disinfected"], rationale: "Sterile means completely free of all viable microorganisms and spores." },
+            { id: 50, part: 1, module: "Module 10: Infection Control", scene: "M10-S5", situation: "Surgical Suite", informal: "Preventing contamination by pathogens during procedure.", key: "asepsis", options: ["asepsis", "antisepsis", "sterilization", "isolation"], rationale: "Asepsis is the state of being free from disease-causing microorganisms." },
+
+            // PART II: 51-60 (Formal Clinical to Reassuring Bedside Translation)
+            { id: 51, part: 2, module: "Module 11: Perioperative Care", scene: "M11-S1", situation: "Pre-Op Holding", informal: "Formal term: 'NPO since midnight'. Explain to patient:", key: "nothing by mouth", options: ["nothing by mouth", "eat light breakfast", "drink clear water only", "take all regular pills"], rationale: "NPO stands for non per os, meaning nothing by mouth." },
+            { id: 52, part: 2, module: "Module 11: Perioperative Care", scene: "M11-S2", situation: "PACU Recovery", informal: "Formal term: 'Ambulalation as tolerated'. Explain to patient:", key: "walking around safely", options: ["walking around safely", "strict bed rest", "arm exercises in bed", "sitting in wheelchair"], rationale: "Ambulation refers to walking or moving about." },
+            { id: 53, part: 2, module: "Module 12: Pediatric Nursing", scene: "M12-S1", situation: "Peds Unit", informal: "Formal term: 'Febrile convulsion'. Explain to parent:", key: "fever-induced fit", options: ["fever-induced fit", "epileptic brain damage", "choking spell", "muscle strain"], rationale: "Febrile convulsion is a seizure triggered by high body fever in young children." },
+            { id: 54, part: 2, module: "Module 12: Pediatric Nursing", scene: "M12-S2", situation: "Peds ICU", informal: "Formal term: 'Otitis media'. Explain to parent:", key: "middle ear infection", options: ["middle ear infection", "outer ear scrape", "throat infection", "sinus blockage"], rationale: "Otitis media is inflammation or infection of the middle ear." },
+            { id: 55, part: 2, module: "Module 13: Maternal Health", scene: "M13-S1", situation: "Maternity Ward", informal: "Formal term: 'Lochia rubra'. Explain to mother:", key: "normal postpartum red bleeding", options: ["normal postpartum red bleeding", "infected vaginal discharge", "urine leakage", "amniotic fluid leak"], rationale: "Lochia rubra is the initial red blood-rich discharge after childbirth." },
+            { id: 56, part: 2, module: "Module 13: Maternal Health", scene: "M13-S2", situation: "Labor & Delivery", informal: "Formal term: 'Cervical effacement'. Explain to mother:", key: "thinning of the cervix", options: ["thinning of the cervix", "opening of the cervix", "descent of the baby", "rupture of waters"], rationale: "Effacement refers to the thinning and shortening of the cervix during labor." },
+            { id: 57, part: 2, module: "Module 14: Mental Health", scene: "M14-S1", situation: "Psychiatry Unit", informal: "Formal term: 'Auditory hallucination'. Explain to family:", key: "hearing voices or sounds others don't hear", options: ["hearing voices or sounds others don't hear", "seeing strange shadows", "having false beliefs", "extreme mood shifts"], rationale: "Auditory hallucination is perceiving sound without external auditory stimulus." },
+            { id: 58, part: 2, module: "Module 14: Mental Health", scene: "M14-S2", situation: "Psych Clinic", informal: "Formal term: 'Lability'. Explain to family:", key: "rapid uncontrolled mood shifts", options: ["rapid uncontrolled mood shifts", "deep chronic depression", "severe memory loss", "social withdrawal"], rationale: "Emotional lability refers to rapid, exaggerated changes in mood." },
+            { id: 59, part: 2, module: "Module 15: Emergency Care", scene: "M15-S1", situation: "Trauma Room", informal: "Formal term: 'Tourniquet application'. Explain to patient:", key: "tight band to stop heavy bleeding", options: ["tight band to stop heavy bleeding", "soft bandage to cover wound", "splint to hold bone straight", "ice pack to reduce swelling"], rationale: "A tourniquet is a tight device used to compress blood vessels and stop severe arterial bleeding." },
+            { id: 60, part: 2, module: "Module 15: Emergency Care", scene: "M15-S2", situation: "ED Bay 4", informal: "Formal term: 'Intubation'. Explain to family:", key: "placing a breathing tube into the windpipe", options: ["placing a breathing tube into the windpipe", "inserting a feeding tube into stomach", "putting a catheter in the bladder", "starting an intravenous line"], rationale: "Intubation involves inserting an endotracheal tube into the trachea to assist ventilation." },
+
+            // PART III: 61-80 (Sentence Completion & Clinical Terminology Identification)
+            { id: 61, part: 3, module: "Module 16: Oncology Nursing", scene: "M16-S1", situation: "Oncology Ward", informal: "The spread of cancer cells from primary site to distant organs is termed _______.", key: "metastasis", options: ["metastasis", "benign", "hyperplasia", "dysplasia"], rationale: "Metastasis is the pathogenic spread of disease or cancer from one organ to another." },
+            { id: 62, part: 3, module: "Module 16: Oncology Nursing", scene: "M16-S2", situation: "Chemo Suite", informal: "A severe reduction in white blood cells causing vulnerability to infection is _______.", key: "neutropenia", options: ["neutropenia", "anemia", "thrombocytopenia", "leukocytosis"], rationale: "Neutropenia is an abnormally low concentration of neutrophils in blood." },
+            { id: 63, part: 3, module: "Module 16: Oncology Nursing", scene: "M16-S3", situation: "Oncology Clinic", informal: "Palliative care focuses primarily on symptom _______ rather than curative treatment.", key: "alleviation", options: ["alleviation", "elimination", "diagnosis", "eradication"], rationale: "Palliative care centers on symptom alleviation, comfort, and quality of life." },
+            { id: 64, part: 3, module: "Module 16: Oncology Nursing", scene: "M16-S4", situation: "Infusion Center", informal: "Accidental leakage of vesicant intravenous drug into surrounding tissue is _______.", key: "extravasation", options: ["extravasation", "infiltration", "phlebitis", "thrombosis"], rationale: "Extravasation is the leakage of tissue-damaging vesicant fluid out of a blood vessel." },
+            { id: 65, part: 3, module: "Module 16: Oncology Nursing", scene: "M16-S5", situation: "Hospice Care", informal: "Wasting syndrome with weight loss and muscle loss in advanced cancer is _______.", key: "cachexia", options: ["cachexia", "anorexia", "sarcopenia", "obesity"], rationale: "Cachexia is complex metabolic syndrome associated with underlying illness causing muscle loss." },
+
+            { id: 66, part: 3, module: "Module 17: Geriatric Care", scene: "M17-S1", situation: "Nursing Home", informal: "Progressive global deterioration of cognitive function in elderly is _______.", key: "dementia", options: ["dementia", "delirium", "depression", "psychosis"], rationale: "Dementia is chronic, progressive cognitive impairment." },
+            { id: 67, part: 3, module: "Module 17: Geriatric Care", scene: "M17-S2", situation: "Geriatric Ward", informal: "Sudden, acute, fluctuating state of confusion and altered consciousness is _______.", key: "delirium", options: ["delirium", "dementia", "dyskinesia", "dystonia"], rationale: "Delirium is an acute, short-term fluctuating disturbance in attention and awareness." },
+            { id: 68, part: 3, module: "Module 17: Geriatric Care", scene: "M17-S3", situation: "Rehab Center", informal: "Involuntary leakage of urine during coughing or laughing is _______ incontinence.", key: "stress", options: ["stress", "urge", "overflow", "functional"], rationale: "Stress incontinence occurs when physical pressure/exertion causes urine leakage." },
+            { id: 69, part: 3, module: "Module 17: Geriatric Care", scene: "M17-S4", situation: "Geriatric Clinic", informal: "Age-related progressive loss of skeletal muscle mass and strength is _______.", key: "sarcopenia", options: ["sarcopenia", "osteoporosis", "osteomalacia", "atrophy"], rationale: "Sarcopenia is loss of muscle mass, strength, and function related to aging." },
+            { id: 70, part: 3, module: "Module 17: Geriatric Care", scene: "M17-S5", situation: "Home Health", informal: "Difficulty in performing Activities of Daily Living is evaluated using ADL _______.", key: "index", options: ["index", "scale", "ratio", "census"], rationale: "ADL index/scale measures functional independence in personal care activities." },
+
+            { id: 71, part: 3, module: "Module 18: Pharmacology", scene: "M18-S1", situation: "Med Room", informal: "An unpleasant or harmful unintended reaction to a drug dose is an _______ event.", key: "adverse", options: ["adverse", "therapeutic", "idiosyncratic", "synergistic"], rationale: "Adverse drug events are unintended harm resulting from clinical medication use." },
+            { id: 72, part: 3, module: "Module 18: Pharmacology", scene: "M18-S2", situation: "ICU Pharmacy", informal: "Substance administered to counteract or neutralize a specific poison is an _______.", key: "antidote", options: ["antidote", "agonist", "antagonist", "inhibitor"], rationale: "An antidote neutralizes or counteracts toxic drug effects." },
+            { id: 73, part: 3, module: "Module 18: Pharmacology", scene: "M18-S3", situation: "Surgical Unit", informal: "Medication given before main treatment to enhance effectiveness is _______ therapy.", key: "adjuvant", options: ["adjuvant", "palliative", "prophylactic", "curative"], rationale: "Adjuvant therapy is additional treatment given after primary treatment to lower risk of recurrence." },
+            { id: 74, part: 3, module: "Module 18: Pharmacology", scene: "M18-S4", situation: "Clinical Care", informal: "Decreased clinical response to a drug following repeated administration is _______.", key: "tolerance", options: ["tolerance", "dependence", "addiction", "resistance"], rationale: "Tolerance is diminished response to a drug result of continued use." },
+            { id: 75, part: 3, module: "Module 18: Pharmacology", scene: "M18-S5", situation: "Medical Unit", informal: "A medication ordered 'PRN' is administered strictly as _______.", key: "needed", options: ["needed", "scheduled", "immediately", "before meals"], rationale: "PRN (pro re nata) means administered as needed or required." },
+
+            { id: 76, part: 3, module: "Module 19: Fluid & Electrolytes", scene: "M19-S1", situation: "Renal Ward", informal: "Abnormally high concentration of potassium in the blood is _______.", key: "hyperkalemia", options: ["hyperkalemia", "hyponatremia", "hypercalcemia", "hypernatremia"], rationale: "Hyperkalemia is high blood serum level of potassium." },
+            { id: 77, part: 3, module: "Module 19: Fluid & Electrolytes", scene: "M19-S2", situation: "Step-Down Unit", informal: "Low concentration of sodium in serum causing confusion is _______.", key: "hyponatremia", options: ["hyponatremia", "hypokalemia", "hypocalcemia", "hypomagnesemia"], rationale: "Hyponatremia is abnormally low concentration of sodium in blood." },
+            { id: 78, part: 3, module: "Module 19: Fluid & Electrolytes", scene: "M19-S3", situation: "Burn Unit", informal: "A solution with the same osmotic pressure as body fluid is _______.", key: "isotonic", options: ["isotonic", "hypertonic", "hypotonic", "colloid"], rationale: "Isotonic solutions have equal osmolality compared to plasma." },
+            { id: 79, part: 3, module: "Module 19: Fluid & Electrolytes", scene: "M19-S4", situation: "ICU Bay 1", informal: "Accumulation of fluid in the peritoneal cavity of abdomen is _______.", key: "ascites", options: ["ascites", "edema", "effusion", "hematoma"], rationale: "Ascites is accumulation of fluid in the peritoneal abdominal cavity." },
+            { id: 80, part: 3, module: "Module 19: Fluid & Electrolytes", scene: "M19-S5", situation: "ED Bay 6", informal: "Severe fluid deficit leading to dry mucous membranes is _______.", key: "dehydration", options: ["dehydration", "overload", "shock", "azotemia"], rationale: "Dehydration is excessive loss of body water." },
+
+            // PART IV: 81-100 (Context Identification & Clinical Reasoning)
+            { id: 81, part: 4, module: "Module 20: Leadership & Documentation", scene: "M20-S1", situation: "Nursing Station", informal: "Structured handoff communication tool: Situation, Background, Assessment, Recommendation.", key: "SBAR", options: ["SBAR", "SOAP", "PIE", "ADPIE"], rationale: "SBAR is a standardized framework for communication between healthcare team members." },
+            { id: 82, part: 4, module: "Module 20: Leadership & Documentation", scene: "M20-S2", situation: "Shift Change", informal: "Transfer of professional care responsibility from one nurse to another.", key: "handoff", options: ["handoff", "discharge", "referral", "admission"], rationale: "A handoff is the transfer of patient care responsibilities." },
+            { id: 83, part: 4, module: "Module 20: Leadership & Documentation", scene: "M20-S3", situation: "Quality Office", informal: "Unintended event involving death or serious physical/psychological injury.", key: "sentinel event", options: ["sentinel event", "near miss", "adverse event", "variance"], rationale: "A sentinel event is an unexpected occurrence involving death or serious injury." },
+            { id: 84, part: 4, module: "Module 20: Leadership & Documentation", scene: "M20-S4", situation: "Staff Meeting", informal: "Assigning responsibility for performing a nursing task to a UAP or LPN.", key: "delegation", options: ["delegation", "collaboration", "supervision", "assignment"], rationale: "Delegation is transferring performance of a task while retaining accountability." },
+            { id: 85, part: 4, module: "Module 20: Leadership & Documentation", scene: "M20-S5", situation: "Risk Mgmt", informal: "An event or error that could have caused harm but was caught in time.", key: "near miss", options: ["near miss", "sentinel event", "malpractice", "negligence"], rationale: "A near miss is an unplanned event that did not result in injury, illness, or damage—but had potential to do so." },
+
+            { id: 86, part: 4, module: "Module 1: General Symptoms", scene: "M1-S6", situation: "Triage Desk", informal: "Patient reports sudden loss of vision in one eye without pain.", key: "Amaurosis fugax", options: ["Amaurosis fugax", "Glaucoma", "Cataract", "Diplopia"], rationale: "Amaurosis fugax is sudden, transient painless loss of vision in one eye." },
+            { id: 87, part: 4, module: "Module 3: Cardiovascular System", scene: "M3-S6", situation: "Telemetry", informal: "A patient experiencing a sudden drop in blood pressure upon standing up.", key: "Orthostatic hypotension", options: ["Orthostatic hypotension", "Essential hypertension", "Vasovagal syncope", "Autonomic dysreflexia"], rationale: "Orthostatic hypotension is a sudden fall in BP when standing up." },
+            { id: 88, part: 4, module: "Module 5: Neurological Assessment", scene: "M5-S6", situation: "Neuro Ward", informal: "Nurse observes pupil constriction in response to light.", key: "Miosis", options: ["Miosis", "Mydriasis", "Anisocoria", "Nystagmus"], rationale: "Miosis is constriction of the pupil of the eye." },
+            { id: 89, part: 4, module: "Module 8: Integumentary/Wound Care", scene: "M8-S6", situation: "Burn Unit", informal: "Skin redness, blistering, and extreme pain involving epidermis and part of dermis.", key: "Second-degree burn", options: ["Second-degree burn", "First-degree burn", "Third-degree burn", "Fourth-degree burn"], rationale: "Second-degree (partial-thickness) burns affect epidermis and dermis with blisters." },
+            { id: 90, part: 4, module: "Module 10: Infection Control", scene: "M10-S6", situation: "Isolation Room", informal: "Precautions required for Clostridioides difficile (C. diff) infection.", key: "Contact precautions with hand washing", options: ["Contact precautions with hand washing", "Airborne precautions with N95", "Droplet precautions with surgical mask", "Standard precautions only"], rationale: "C. diff requires contact precautions and soap-and-water handwashing (spores resist alcohol)." },
+
+            { id: 91, part: 4, module: "Module 11: Perioperative Care", scene: "M11-S3", situation: "OR Room 3", informal: "Verification process conducted right before surgical incision.", key: "Surgical Time-Out", options: ["Surgical Time-Out", "Sign-in", "Sign-out", "Pre-anesthesia check"], rationale: "Time-Out is the final safety check before procedure start to confirm patient, site, and procedure." },
+            { id: 92, part: 4, module: "Module 12: Pediatric Nursing", scene: "M12-S3", situation: "Peds ER", informal: "Barking cough, inspiratory stridor, and hoarseness in a toddler.", key: "Croup", options: ["Croup", "Asthma", "Bronchiolitis", "Epiglottitis"], rationale: "Croup (laryngotracheobronchitis) typically presents with a characteristic seal-like barking cough." },
+            { id: 93, part: 4, module: "Module 13: Maternal Health", scene: "M13-S3", situation: "Delivery Room", informal: "Assessment score measured at 1 and 5 minutes after birth.", key: "Apgar score", options: ["Apgar score", "Bishop score", "Ballard score", "Glasgow scale"], rationale: "Apgar score quickly summarizes newborn health at 1 and 5 minutes." },
+            { id: 94, part: 4, module: "Module 15: Emergency Care", scene: "M15-S3", situation: "ED Triage", informal: "Prioritizing patients based on severity of condition upon arrival.", key: "Triage", options: ["Triage", "Admission", "Registration", "Screening"], rationale: "Triage is sorting patients according to urgency of treatment needed." },
+            { id: 95, part: 4, module: "Module 18: Pharmacology", scene: "M18-S6", situation: "Med Room", informal: "Checking 6 Rights: Right Patient, Medication, Dose, Route, Time, and _______.", key: "Documentation", options: ["Documentation", "Indication", "Reason", "Provider"], rationale: "The standard medication rights include Right Documentation." },
+
+            { id: 96, part: 4, module: "Module 2: Respiratory Care", scene: "M2-S6", situation: "ICU Ventilator", informal: "Accumulation of air in the pleural space causing lung collapse.", key: "Pneumothorax", options: ["Pneumothorax", "Hemothorax", "Atelectasis", "Pleural effusion"], rationale: "Pneumothorax is presence of air in pleural space causing partial or complete lung collapse." },
+            { id: 97, part: 4, module: "Module 4: Gastrointestinal Care", scene: "M4-S6", situation: "PACU", informal: "Cessation of bowel motility following abdominal surgery.", key: "Paralytic ileus", options: ["Paralytic ileus", "Bowel obstruction", "Peritonitis", "Volvulus"], rationale: "Paralytic ileus is non-mechanical obstruction caused by paralysis of intestinal muscles." },
+            { id: 98, part: 4, module: "Module 6: Renal & Urinary", scene: "M6-S6", situation: "Medical Ward", informal: "Inability to completely empty the bladder.", key: "Urinary retention", options: ["Urinary retention", "Urinary incontinence", "Dysuria", "Uremia"], rationale: "Urinary retention is inability to empty bladder completely." },
+            { id: 99, part: 4, module: "Module 7: Musculoskeletal", scene: "M7-S6", situation: "Ortho Unit", informal: "Increased pressure within a muscle compartment causing tissue ischemia.", key: "Compartment syndrome", options: ["Compartment syndrome", "Deep vein thrombosis", "Osteomyelitis", "Fasciitis"], rationale: "Compartment syndrome is painful condition caused by pressure buildup in muscles." },
+            { id: 100, part: 4, module: "Module 14: Mental Health", scene: "M14-S3", situation: "Psych Ward", informal: "Fixed, false belief resistant to reasoning or contrary facts.", key: "Delusion", options: ["Delusion", "Hallucination", "Illusion", "Obsession"], rationale: "A delusion is a firm, fixed false belief held despite clear evidence to the contrary." }
+        ];
+
+        // APP STATE
+        let currentCandidate = { name: "", id: "" };
+        let candidateAnswers = {};
+        let activeFilter = 'all';
+        let timerInterval = null;
+        let secondsElapsed = 0;
+
+        // INITIALIZATION & REGISTRATION GATE
+        function startAssessment(event) {
+            event.preventDefault();
+            const nameInput = document.getElementById('regName').value.trim();
+            const idInput = document.getElementById('regId').value.trim();
+
+            if (!nameInput || !idInput) {
+                alert("Please provide both Candidate Name and Registration ID.");
+                return;
+            }
+
+            currentCandidate.name = nameInput;
+            currentCandidate.id = idInput;
+
+            document.getElementById('displayCandidateName').innerText = currentCandidate.name;
+            document.getElementById('displayCandidateId').innerText = currentCandidate.id;
+
+            // Hide Modal & Show App
+            document.getElementById('registrationModal').classList.add('hidden');
+            document.getElementById('appContainer').classList.remove('hidden');
+
+            // Start Timer
+            startTimer();
+
+            // Render Questions
+            renderTestItems();
+            updateProgress();
+        }
+
+        // TIMER ENGINE
+        function startTimer() {
+            timerInterval = setInterval(() => {
+                secondsElapsed++;
+                const hrs = String(Math.floor(secondsElapsed / 3600)).padStart(2, '0');
+                const mins = String(Math.floor((secondsElapsed % 3600) / 60)).padStart(2, '0');
+                const secs = String(secondsElapsed % 60).padStart(2, '0');
+                document.getElementById('timerDisplay').innerText = `${hrs}:${mins}:${secs}`;
+            }, 1000);
+        }
+
+        // FILTER ITEMS BY PART
+        function filterPart(part) {
+            activeFilter = part;
+            // Highlight Tab
+            document.querySelectorAll('.part-tab').forEach(btn => {
+                btn.className = "part-tab px-4 py-2 rounded-lg text-sm font-medium transition bg-white text-slate-600 hover:bg-slate-100 border border-slate-200";
+            });
+            const selectedTab = document.getElementById(`tab-${part}`);
+            if (selectedTab) {
+                selectedTab.className = "part-tab px-4 py-2 rounded-lg text-sm font-medium transition bg-teal-600 text-white shadow-sm";
+            }
+            renderTestItems();
+        }
+
+        // RENDER TEST ITEMS IN TABLE / CARDS (NO KEYS OR RATIONALES VISIBLE)
+        function renderTestItems() {
+            const container = document.getElementById('itemsContainer');
+            container.innerHTML = '';
+
+            const filtered = rawTestData.filter(item => {
+                if (activeFilter === 'all') return true;
+                return item.part === parseInt(activeFilter);
+            });
+
+            if (filtered.length === 0) {
+                container.innerHTML = `<div class="text-center py-8 text-slate-500">No items found for this filter.</div>`;
+                return;
+            }
+
+            // Group or render table style
+            let tableHTML = `
+                <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
+                    <div class="overflow-x-auto custom-scrollbar">
+                        <table class="w-full text-left border-collapse">
+                            <thead>
+                                <tr class="bg-slate-900 text-white text-xs font-semibold uppercase tracking-wider">
+                                    <th class="py-3.5 px-4 w-20">Item #</th>
+                                    <th class="py-3.5 px-4 w-44">Module & Scene</th>
+                                    <th class="py-3.5 px-4 w-44">Setting / Situation</th>
+                                    <th class="py-3.5 px-4">Informal / Bedside Prompt (Transcribed)</th>
+                                    <th class="py-3.5 px-4 w-72">Candidate Formal Answer</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-slate-200 text-sm">
+            `;
+
+            filtered.forEach(item => {
+                const savedAns = candidateAnswers[item.id] || '';
+
+                // Build Options Dropdown for Multiple Choice Selection
+                let inputControl = '';
+                if (item.options && item.options.length > 0) {
+                    let optHTML = `<option value="">-- Select Response --</option>`;
+                    item.options.forEach(opt => {
+                        const selected = savedAns === opt ? 'selected' : '';
+                        optHTML += `<option value="${escapeHTML(opt)}" ${selected}>${escapeHTML(opt)}</option>`;
+                    });
+                    inputControl = `
+                        <select onchange="saveAnswer(${item.id}, this.value)" 
+                            class="w-full py-2 px-3 bg-slate-50 border border-slate-300 rounded-lg text-slate-800 text-sm font-medium focus:ring-2 focus:ring-teal-500 focus:bg-white transition">
+                            ${optHTML}
+                        </select>
+                    `;
+                } else {
+                    inputControl = `
+                        <input type="text" value="${escapeHTML(savedAns)}" oninput="saveAnswer(${item.id}, this.value)"
+                            placeholder="Type clinical term..."
+                            class="w-full py-2 px-3 bg-slate-50 border border-slate-300 rounded-lg text-slate-800 text-sm focus:ring-2 focus:ring-teal-500 focus:bg-white transition">
+                    `;
+                }
+
+                tableHTML += `
+                    <tr class="hover:bg-slate-50 transition">
+                        <td class="py-3.5 px-4 font-bold text-slate-900">#${item.id}</td>
+                        <td class="py-3.5 px-4">
+                            <span class="inline-block bg-slate-100 text-slate-700 font-semibold px-2 py-0.5 rounded text-xs border border-slate-200 mb-1">${item.scene}</span>
+                            <div class="text-xs font-medium text-slate-500">${item.module}</div>
+                        </td>
+                        <td class="py-3.5 px-4 font-medium text-slate-700">${item.situation}</td>
+                        <td class="py-3.5 px-4 text-slate-800 font-medium">
+                            <div class="bg-amber-50/70 border-l-4 border-amber-400 p-2.5 rounded text-slate-800 text-xs sm:text-sm">
+                                <i class="fa-solid fa-quote-left text-amber-400 mr-1.5 opacity-70"></i>
+                                "${item.informal}"
+                            </div>
+                        </td>
+                        <td class="py-3.5 px-4">
+                            ${inputControl}
+                        </td>
+                    </tr>
+                `;
+            });
+
+            tableHTML += `
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            `;
+
+            container.innerHTML = tableHTML;
+        }
+
+        // SAVE CANDIDATE ANSWER IN STATE
+        function saveAnswer(itemId, value) {
+            candidateAnswers[itemId] = value.trim();
+            updateProgress();
+        }
+
+        // UPDATE PROGRESS BAR
+        function updateProgress() {
+            const total = rawTestData.length;
+            const answeredCount = Object.keys(candidateAnswers).filter(k => candidateAnswers[k] && candidateAnswers[k] !== "").length;
+            const percentage = Math.round((answeredCount / total) * 100);
+
+            document.getElementById('progressText').innerText = `Answered: ${answeredCount} / ${total} Items`;
+            document.getElementById('progressBar').style.width = `${percentage}%`;
+            document.getElementById('progressPercent').innerText = `${percentage}%`;
+        }
+
+        // CONFIRM SUBMISSION MODAL
+        function confirmSubmit() {
+            const total = rawTestData.length;
+            const answeredCount = Object.keys(candidateAnswers).filter(k => candidateAnswers[k] && candidateAnswers[k] !== "").length;
+            const unanswered = total - answeredCount;
+
+            const warningEl = document.getElementById('unansweredWarning');
+            if (unanswered > 0) {
+                warningEl.innerHTML = `<span class="text-amber-600 font-semibold">Warning: You have ${unanswered} unanswered item(s).</span> Are you sure you want to finalize and submit?`;
+            } else {
+                warningEl.innerText = "All 100 items have been answered. Ready to submit and process your score?";
+            }
+
+            document.getElementById('confirmModal').classList.remove('hidden');
+        }
+
+        function closeConfirmModal() {
+            document.getElementById('confirmModal').classList.add('hidden');
+        }
+
+        // FINALIZE SUBMISSION & GENERATE RESULTS DASHBOARD
+        function finalizeSubmission() {
+            clearInterval(timerInterval);
+            closeConfirmModal();
+
+            // Hide test area, show results dashboard
+            document.getElementById('testArea').classList.add('hidden');
+            const resultsArea = document.getElementById('resultsArea');
+            resultsArea.classList.remove('hidden');
+
+            // Evaluate answers
+            let correctCount = 0;
+            const evaluatedList = rawTestData.map(item => {
+                const userAns = candidateAnswers[item.id] || "";
+                const isCorrect = userAns.toLowerCase().trim() === item.key.toLowerCase().trim();
+                if (isCorrect) correctCount++;
+                return {
+                    ...item,
+                    userAns,
+                    isCorrect
+                };
+            });
+
+            const scorePercent = Math.round((correctCount / rawTestData.length) * 100);
+            const submissionDate = new Date().toLocaleString();
+
+            // Build Comprehensive Performance Dashboard HTML
+            resultsArea.innerHTML = `
+                <!-- Dashboard Header Header -->
+                <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 md:p-8 mb-8">
+                    <div class="flex flex-col md:flex-row md:items-center justify-between gap-6 border-b border-slate-100 pb-6 mb-6">
+                        <div>
+                            <div class="inline-flex items-center gap-2 px-3 py-1 bg-teal-50 text-teal-700 text-xs font-semibold rounded-full border border-teal-200 mb-2">
+                                <i class="fa-solid fa-circle-check text-teal-600"></i> Official Assessment Completed
+                            </div>
+                            <h2 class="text-2xl md:text-3xl font-extrabold text-slate-900">Performance Results Dashboard</h2>
+                            <p class="text-slate-500 text-sm mt-1">100-Item Nursing English Vocabulary & Communication Assessment</p>
+                        </div>
+                        <div class="flex gap-3 no-print">
+                            <button onclick="window.print()" class="px-4 py-2 bg-slate-800 hover:bg-slate-900 text-white font-semibold rounded-xl text-sm transition shadow flex items-center gap-2">
+                                <i class="fa-solid fa-print"></i> Print / Export PDF
+                            </button>
+                            <button onclick="copyMarkdownResults()" class="px-4 py-2 bg-teal-600 hover:bg-teal-700 text-white font-semibold rounded-xl text-sm transition shadow flex items-center gap-2">
+                                <i class="fa-solid fa-copy"></i> Copy Markdown
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Candidate Summary Grid -->
+                    <div class="grid grid-cols-1 md:grid-cols-4 gap-4 bg-slate-50 p-4 rounded-xl border border-slate-200">
+                        <div>
+                            <span class="text-xs text-slate-500 uppercase font-bold tracking-wider">Candidate Name</span>
+                            <div class="font-bold text-slate-900 text-base mt-0.5">${escapeHTML(currentCandidate.name)}</div>
+                        </div>
+                        <div>
+                            <span class="text-xs text-slate-500 uppercase font-bold tracking-wider">Registration ID</span>
+                            <div class="font-bold text-slate-900 text-base mt-0.5">${escapeHTML(currentCandidate.id)}</div>
+                        </div>
+                        <div>
+                            <span class="text-xs text-slate-500 uppercase font-bold tracking-wider">Submission Date</span>
+                            <div class="font-bold text-slate-900 text-sm mt-0.5">${submissionDate}</div>
+                        </div>
+                        <div>
+                            <span class="text-xs text-slate-500 uppercase font-bold tracking-wider">Time Elapsed</span>
+                            <div class="font-bold text-slate-900 text-sm mt-0.5">${document.getElementById('timerDisplay').innerText}</div>
+                        </div>
+                    </div>
+
+                    <!-- Score Highlight Banner -->
+                    <div class="mt-6 p-6 bg-gradient-to-r ${scorePercent >= 75 ? 'from-teal-600 to-emerald-700' : 'from-slate-800 to-slate-900'} rounded-2xl text-white shadow-lg flex flex-col sm:flex-row items-center justify-between gap-4">
+                        <div class="flex items-center gap-4">
+                            <div class="w-16 h-16 rounded-2xl bg-white/10 flex items-center justify-center text-2xl font-black border border-white/20">
+                                ${scorePercent}%
+                            </div>
+                            <div>
+                                <div class="text-xs text-teal-200 font-semibold uppercase tracking-wider">Final Test Score</div>
+                                <div class="text-2xl font-bold">${correctCount} / 100 Items Correct</div>
+                                <div class="text-xs text-slate-300 mt-0.5">Passing Standard: 75% Mastery</div>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <span class="px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider ${scorePercent >= 75 ? 'bg-emerald-400 text-slate-950' : 'bg-rose-500 text-white'}">
+                                ${scorePercent >= 75 ? 'PASSED - ADVANCED PROFICIENCY' : 'NEEDS REVISION'}
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Detailed Items Results Table -->
+                <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden mb-8">
+                    <div class="p-4 bg-slate-900 text-white flex justify-between items-center">
+                        <h3 class="font-bold text-base flex items-center gap-2">
+                            <i class="fa-solid fa-list-check text-teal-400"></i>
+                            Detailed Question Breakdown & Rationales
+                        </h3>
+                        <span class="text-xs text-slate-400">Key Answers & Rationales Unlocked</span>
+                    </div>
+
+                    <div class="overflow-x-auto custom-scrollbar">
+                        <table class="w-full text-left border-collapse">
+                            <thead>
+                                <tr class="bg-slate-100 text-slate-700 text-xs font-semibold uppercase tracking-wider border-b border-slate-200">
+                                    <th class="py-3.5 px-4 w-16">Item</th>
+                                    <th class="py-3.5 px-4 w-36">Scene / Module</th>
+                                    <th class="py-3.5 px-4 w-48">Candidate Response</th>
+                                    <th class="py-3.5 px-4 w-48">Correct Answer Key</th>
+                                    <th class="py-3.5 px-4 w-28 text-center">Status</th>
+                                    <th class="py-3.5 px-4">Clinical Rationale</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-slate-200 text-sm">
+                                ${evaluatedList.map(item => `
+                                    <tr class="${item.isCorrect ? 'bg-white' : 'bg-rose-50/30'} hover:bg-slate-50 transition">
+                                        <td class="py-3.5 px-4 font-bold text-slate-900">#${item.id}</td>
+                                        <td class="py-3.5 px-4">
+                                            <span class="inline-block bg-slate-100 text-slate-700 font-semibold px-2 py-0.5 rounded text-xs border border-slate-200 mb-0.5">${item.scene}</span>
+                                            <div class="text-xs text-slate-500">${item.module}</div>
+                                        </td>
+                                        <td class="py-3.5 px-4 font-semibold ${item.isCorrect ? 'text-slate-800' : 'text-rose-600'}">
+                                            ${item.userAns ? escapeHTML(item.userAns) : '<em class="text-slate-400 font-normal">No Answer</em>'}
+                                        </td>
+                                        <td class="py-3.5 px-4 font-bold text-teal-700">
+                                            ${escapeHTML(item.key)}
+                                        </td>
+                                        <td class="py-3.5 px-4 text-center">
+                                            ${item.isCorrect 
+                                                ? '<span class="px-2.5 py-1 bg-emerald-100 text-emerald-800 rounded-full text-xs font-bold inline-flex items-center gap-1"><i class="fa-solid fa-check"></i> Correct</span>' 
+                                                : '<span class="px-2.5 py-1 bg-rose-100 text-rose-800 rounded-full text-xs font-bold inline-flex items-center gap-1"><i class="fa-solid fa-xmark"></i> Incorrect</span>'}
+                                        </td>
+                                        <td class="py-3.5 px-4 text-xs text-slate-600 leading-relaxed">
+                                            ${escapeHTML(item.rationale)}
+                                        </td>
+                                    </tr>
+                                `).join('')}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            `;
+        }
+
+        // COPY FULL TEST & RESULTS AS MARKDOWN
+        function copyMarkdownResults() {
+            let markdown = `# 100-Item Nursing English Assessment Results\n\n`;
+            markdown += `**Candidate Name:** ${currentCandidate.name}\n`;
+            markdown += `**Candidate ID:** ${currentCandidate.id}\n`;
+            markdown += `**Date/Time:** ${new Date().toLocaleString()}\n`;
+            
+            let correctCount = 0;
+            rawTestData.forEach(item => {
+                const userAns = candidateAnswers[item.id] || "No Answer";
+                if (userAns.toLowerCase().trim() === item.key.toLowerCase().trim()) correctCount++;
+            });
+
+            markdown += `**Score:** ${correctCount} / 100 (${Math.round((correctCount/100)*100)}%)\n\n`;
+            markdown += `--- \n\n`;
+            markdown += `| Item | Scene | Candidate Answer | Correct Key | Status | Clinical Rationale |\n`;
+            markdown += `|---|---|---|---|---|---|\n`;
+
+            rawTestData.forEach(item => {
+                const userAns = candidateAnswers[item.id] || "No Answer";
+                const isCorrect = userAns.toLowerCase().trim() === item.key.toLowerCase().trim();
+                markdown += `| #${item.id} | ${item.scene} | ${userAns} | ${item.key} | ${isCorrect ? 'PASS' : 'FAIL'} | ${item.rationale} |\n`;
+            });
+
+            // Copy to clipboard safely inside iframe
+            const tempInput = document.createElement("textarea");
+            tempInput.value = markdown;
+            document.body.appendChild(tempInput);
+            tempInput.select();
+            document.execCommand("copy");
+            document.body.removeChild(tempInput);
+
+            alert("Full test results copied to clipboard in Markdown format!");
+        }
+
+        // HELPER TO ESCAPE HTML
+        function escapeHTML(str) {
+            if (!str) return '';
+            return str.replace(/[&<>'"]/g, 
+                tag => ({
+                    '&': '&amp;',
+                    '<': '&lt;',
+                    '>': '&gt;',
+                    "'": '&#39;',
+                    '"': '&quot;'
+                }[tag] || tag)
+            );
+        }
+    </script>
+</body>
+</html>
